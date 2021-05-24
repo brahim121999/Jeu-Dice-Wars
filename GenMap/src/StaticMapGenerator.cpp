@@ -5,7 +5,10 @@
 API_EXPORT void InitMap(SInfo* info)
 {
 	info->SetName("Default map");
-	info->AddMember("Fabien Picarougne");
+	info->AddMember("Adam Creusevault");
+	info->AddMember("Ibrahim Braham");
+	info->AddMember("Matteo ");
+	info->AddMember("Clément Madre");
 }
 
 API_EXPORT IMap* MapFactory()

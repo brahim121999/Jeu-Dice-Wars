@@ -1,10 +1,12 @@
 #include "MapLoader.h"
 #include "DefaultMap.h"
+#include "Map.h"
 
 SRegions* MapLoader::GenerateMap(unsigned int& r, unsigned int& c)
 {
 	Regions regions;
-	LoadDefaultMap(regions);
+	//LoadDefaultMap(regions);
+	loadMap(regions);
 	unsigned int nbR, nbC;
 	SRegions* sregions = ConvertMap(regions, nbR, nbC);
 	r = nbR;
