@@ -20,3 +20,6 @@ protected:
 	const unsigned int NbPlayer;
 	SMap Map;
 };
+
+double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir);
+double proba(unsigned int nbDes, unsigned int nbDesVoisin);
