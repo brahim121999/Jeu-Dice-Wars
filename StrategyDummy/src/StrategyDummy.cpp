@@ -10,19 +10,14 @@ StrategyDummy::StrategyDummy(unsigned int id, unsigned int nbPlayer, const SMap*
 	NbPlayer(nbPlayer)
 {
 	// faire une copie entière de la structure map localement dans l'objet Map
-	//Map.cells = nullptr;
-	//Map.nbCells = 0;
-
+	// on copie les cellules
 	Map.nbCells = map->nbCells;
 	Map.cells = new SCell[Map.nbCells];
 	for (unsigned int i = 0; i < Map.nbCells; i++) {
 		Map.cells[i] = map->cells[i];
 		Map.cells[i].neighbors = new SCell* [Map.cells[i].nbNeighbors];
 	}
-
-	SCell* ok = &Map.cells[3];
-	SCell* ok1 = &(map->cells[3]);
-
+	// on remplis les tableau de voisins avec les adresses des voisins
 	for (unsigned int i = 0; i < Map.nbCells; ++i) {
 		for (unsigned int j = 0; j < Map.cells[i].nbNeighbors; ++j) {
 			for (unsigned int k = 0; k < Map.nbCells; ++k) {
@@ -32,8 +27,6 @@ StrategyDummy::StrategyDummy(unsigned int id, unsigned int nbPlayer, const SMap*
 			}
 		}
 	}
-	SCell* ok2 = &Map.cells[3];
-	SCell* ok3 = &(map->cells[3]);
 }
 
 StrategyDummy::~StrategyDummy()
@@ -94,8 +87,8 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 		double score = 0;
 
 		// pour la cellule que l'on vient de prendre
-		int nb_voisins_ennemies = 0;
-		int nb_des_voisins = 0;
+		double nb_voisins_ennemies = 0;
+		double nb_des_voisins = 0;
 		for (unsigned int i = 0; i < ennemie.nbNeighbors; i++) {
 			if (ennemie.neighbors[i]->infos.owner != id) {
 				nb_voisins_ennemies += 1;
@@ -119,7 +112,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		int score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices);
+		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices);
 		// score après atq
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
@@ -129,7 +122,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		int score_apres = 1;
+		double score_apres = 1;
 		if (nb_voisins_ennemies != 0) {
 			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1;
 		}
@@ -143,15 +136,15 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 
 		// pour la cellule avec laquelle on prend
 		// score avant atq
-		int nb_voisins_ennemies = 0;
-		int nb_des_voisins = 0;
+		double nb_voisins_ennemies = 0;
+		double nb_des_voisins = 0;
 		for (unsigned int i = 0; i < cellule.nbNeighbors; i++) {
 			if (cellule.neighbors[i]->infos.owner != id) {
 				nb_voisins_ennemies += 1;
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		int score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices);
+		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices);
 		// score après atq
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
@@ -161,7 +154,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		int score_apres = 1;
+		double score_apres = 1;
 		if (nb_voisins_ennemies != 0) {
 			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1;
 		}
