@@ -9,7 +9,7 @@ StrategyDummy::StrategyDummy(unsigned int id, unsigned int nbPlayer, const SMap*
 	Id(id),
 	NbPlayer(nbPlayer)
 {
-	// faire une copie entire de la structure map localement dans l'objet Map
+	// faire une copie entière de la structure map localement dans l'objet Map
 	// on copie les cellules
 	Map.nbCells = map->nbCells;
 	Map.cells = new SCell[Map.nbCells];
@@ -176,5 +176,5 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 // de réussite d'une attaque en fonction du nombre de dés 
 // de la cellule avec laquelle on attaque, et le nombre de dès de la cellule qu'on attaque. 
 double proba(unsigned int nbDes, unsigned int nbDesVoisin) {
-	return (nbDes - nbDesVoisin + 1) / nbDes; // varie entre 0.25 et 1
+	return (nbDes - nbDesVoisin + 1) / nbDes; // varie entre 0.125 et 1
 }
