@@ -76,7 +76,7 @@ bool StrategyDummy::PlayTurn(unsigned int gameTurn, const SGameState* state, STu
 			}
 		}
 	}
-	if (meilleur_score != 0) {
+	if (meilleur_score > 0) {
 		turn->cellFrom = meilleure_action.first;
 		turn->cellTo = meilleure_action.second;
 		return true;
