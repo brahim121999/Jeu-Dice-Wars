@@ -33,9 +33,9 @@ StrategyDummy::~StrategyDummy()
 {
 	// détruire proprement la structure Map
 	for (unsigned int i = 0; i < Map.nbCells; i++) {
+		delete[] Map.cells[i].neighbors;
 		delete& Map.cells[i];
 	}
-	delete& Map;
 }
 
 bool StrategyDummy::PlayTurn(unsigned int gameTurn, const SGameState* state, STurn* turn)
