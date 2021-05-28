@@ -64,7 +64,7 @@ bool StrategyDummy::PlayTurn(unsigned int gameTurn, const SGameState* state, STu
 					// on calcul l'esprance du score obtenu après attaque en fonction des 2 scores 
 					// obtenus et de la proba de réussite
 					double score = (score_atq_reussi * proba_reussite) + (score_atq_echoue * (1 - proba_reussite)); 
-					// varie entre -12 et 21
+					// varie entre -13 et 21
 					if (score > meilleur_score) { 
 					// si elle est meilleure que la meilleure esprance trouvée jusque-là, 
 					//on la retient et l'action joué ce tour sera celle-ci à moins que l'on trouve mieux
@@ -102,9 +102,9 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 			}
 		}
 		if (nb_voisins_ennemies != 0) { // si la cellule que l'on vient de prendre a des voisins ennemis
-			score += (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices - 1); // varie entre -6 et 2
+			score += (cellule.infos.nbDices - 1) - (nb_des_voisins / nb_voisins_ennemies); // varie entre -7 et 6
 		}
-		else { // si elle n'en a pas son score est tout simplement son nombre de dés - 1 
+		else { // si elle n'a pas de voisins ennemies, son score est son nombre de dés
 			score += cellule.infos.nbDices - 1; // varie entre 1 et 7
 		}
 
@@ -136,7 +136,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 
 		// score total de l'attaque : addition du score de la cellule à attaquer 
 		// + la différence de score de la cellule qui attaque, entre avant et après avoir attqué
-		score += (score_apres - score_avant); // varie entre -12 et 21
+		score += (score_apres - score_avant); // varie entre -13 et 21
 
 		return score;
 	}
