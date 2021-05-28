@@ -119,6 +119,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 			}
 		}
 		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices); // varie entre -7 et 6
+
 		// score de la cellule après attaque
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
@@ -132,6 +133,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 		if (nb_voisins_ennemies != 0) {
 			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1; // varie entre 0 et 7
 		}
+
 		// score total de l'attaque : addition du score de la cellule à attaquer 
 		// + la différence de score de la cellule qui attaque, entre avant et après avoir attqué
 		score += (score_apres - score_avant); // varie entre -12 et 21
@@ -152,6 +154,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 			}
 		}
 		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices); // varie entre -7 et 6
+
 		// score après attaque
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
@@ -165,6 +168,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 		if (nb_voisins_ennemies != 0) {
 			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1; // varie entre 0 et 7
 		}
+		
 		// score total de l'attaque 
 		score += (score_apres - score_avant); // varie entre -6 et 14
 
