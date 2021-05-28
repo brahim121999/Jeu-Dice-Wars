@@ -104,7 +104,7 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 		if (nb_voisins_ennemies != 0) { // si la cellule que l'on vient de prendre a des voisins ennemis
 			score += (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices - 1); // varie entre -6 et 2
 		}
-		else { // si elle n'en a pas son score est tout simplement son nombre de dés - 1 (car en attquant on perd 1 dès)
+		else { // si elle n'en a pas son score est tout simplement son nombre de dés - 1 
 			score += cellule.infos.nbDices - 1; // varie entre 1 et 7
 		}
 
