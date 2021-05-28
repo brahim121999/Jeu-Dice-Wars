@@ -9,7 +9,7 @@ StrategyDummy::StrategyDummy(unsigned int id, unsigned int nbPlayer, const SMap*
 	Id(id),
 	NbPlayer(nbPlayer)
 {
-	// faire une copie enti�re de la structure map localement dans l'objet Map
+	// faire une copie entire de la structure map localement dans l'objet Map
 	// on copie les cellules
 	Map.nbCells = map->nbCells;
 	Map.cells = new SCell[Map.nbCells];
@@ -31,7 +31,7 @@ StrategyDummy::StrategyDummy(unsigned int id, unsigned int nbPlayer, const SMap*
 
 StrategyDummy::~StrategyDummy()
 {
-	// d�truire proprement la structure Map
+	// détruire proprement la structure Map
 	for (unsigned int i = 0; i < Map.nbCells; i++) {
 		delete& Map.cells[i];
 	}
@@ -40,30 +40,34 @@ StrategyDummy::~StrategyDummy()
 
 bool StrategyDummy::PlayTurn(unsigned int gameTurn, const SGameState* state, STurn* turn)
 {
-	// on met � jour nos infos sur la map
+	// on met à jour nos infos sur la map
 	for (unsigned int i = 0; i < Map.nbCells; i++) {
 		Map.cells[i].infos = state->cells[i];
 	}
 
-	// par d�faut, la meilleure action est de ne rien faire
+	// par défaut, la meilleure action est de ne rien faire
 	double meilleur_score = 0;
 	std::pair<unsigned int, unsigned int> meilleure_action (NULL,NULL);
 
 	for (unsigned int i = 0; i < Map.nbCells; i++) {
 		if (Map.cells[i].infos.owner == Id && Map.cells[i].infos.nbDices > 1) {
-		// si la cellule est la notre et qu'elle poss�de plus d'un d� (donc qu'elle peux attaquer)
+		// si la cellule est la notre et qu'elle possde plus d'un dès (donc qu'elle peux attaquer)
 			for (unsigned int j = 0; j < Map.cells[i].nbNeighbors; j++) {
 			// pour chacune de ses cellules voisines
 				if (Map.cells[i].neighbors[j]->infos.owner != Id && Map.cells[i].infos.nbDices > Map.cells[i].neighbors[j]->infos.nbDices) {
-				// si la cellule voisine est une cellule adverse et qu'elle poss�de moins de d�s que notre cellule
+				// si la cellule voisine est une cellule adverse et qu'elle possde moins de dès que notre cellule
+				// on calcule grâce à la fonction atqCalculScore(), le score obtenu si l'attaque réussi, 
+				// celui obtenu si l'attaque échoue, ainsi que la probabilité de réussite de notre attaque
 					double score_atq_reussi = atqCalculScore(Id, Map.cells[i], *Map.cells[i].neighbors[j], true);
 					double score_atq_echoue = atqCalculScore(Id, Map.cells[i], *Map.cells[i].neighbors[j], false);
 					double proba_reussite = proba(Map.cells[i].infos.nbDices, Map.cells[i].neighbors[j]->infos.nbDices);
-					// on calcul l'esp�rance du score obtenu apr�s atq
-					double score = (score_atq_reussi * proba_reussite) + (score_atq_echoue * (1 - proba_reussite));
+					// on calcul l'esprance du score obtenu après attaque en fonction des 2 scores 
+					// obtenus et de la proba de réussite
+					double score = (score_atq_reussi * proba_reussite) + (score_atq_echoue * (1 - proba_reussite)); 
+					// varie entre -12 et 21
 					if (score > meilleur_score) { 
-					// si elle est meilleure que la meilleure esp�rance trouv�e jusque-l�, on la retient et l'action jou�e ce tour sera celle-ci
-					// � moins que l'on trouve mieux
+					// si elle est meilleure que la meilleure esprance trouvée jusque-là, 
+					//on la retient et l'action joué ce tour sera celle-ci à moins que l'on trouve mieux
 						meilleur_score = score;
 						meilleure_action.first = Map.cells[i].infos.id;
 						meilleure_action.second = Map.cells[i].neighbors[j]->infos.id;
@@ -82,11 +86,13 @@ bool StrategyDummy::PlayTurn(unsigned int gameTurn, const SGameState* state, STu
 	}
 }
 
+// fonction de calcul de score d'une attaque, basée sur le nombre de voisins amis de la cellule qui attaque, 
+// son nombre de dés ainsi que le nombre de voisins ennemis qu'elle a et leur nombre de dés
 double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
-	if (reussir == true) {
+	if (reussir == true) { // calcul du score si l'attaque réussie
 		double score = 0;
 
-		// pour la cellule que l'on vient de prendre
+		// on calcule le score de la cellule que l'on vient de prendre
 		double nb_voisins_ennemies = 0;
 		double nb_des_voisins = 0;
 		for (unsigned int i = 0; i < ennemie.nbNeighbors; i++) {
@@ -95,15 +101,15 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += ennemie.neighbors[i]->infos.nbDices;
 			}
 		}
-		if (nb_voisins_ennemies != 0) {
-			score += (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices - 1);
+		if (nb_voisins_ennemies != 0) { // si la cellule que l'on vient de prendre a des voisins ennemis
+			score += (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices - 1); // varie entre -6 et 2
 		}
-		else {
-			score += cellule.infos.nbDices - 1;
+		else { // si elle n'en a pas son score est tout simplement son nombre de dés - 1 (car en attquant on perd 1 dès)
+			score += cellule.infos.nbDices - 1; // varie entre 1 et 7
 		}
 
-		// pour la cellule avec laquelle on prend
-		// score avant atq
+		// pour la cellule avec laquelle on attaque
+		// score de la cellule avant attaque
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
 		for (unsigned int i = 0; i < cellule.nbNeighbors; i++) {
@@ -112,8 +118,8 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices);
-		// score apr�s atq
+		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices); // varie entre -7 et 6
+		// score de la cellule après attaque
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
 		for (unsigned int i = 0; i < cellule.nbNeighbors; i++) {
@@ -122,20 +128,21 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		double score_apres = 1;
+		double score_apres = 1; // après avoir attaquer il nous reste forcément 1 dès sur la cellule
 		if (nb_voisins_ennemies != 0) {
-			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1;
+			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1; // varie entre 0 et 7
 		}
-		// score total
-		score += (score_apres - score_avant);
+		// score total de l'attaque : addition du score de la cellule à attaquer 
+		// + la différence de score de la cellule qui attaque, entre avant et après avoir attqué
+		score += (score_apres - score_avant); // varie entre -12 et 21
 
 		return score;
 	}
-	else {
+	else { // calcul du score si l'attaque échoue
 		double score = 0;
 
-		// pour la cellule avec laquelle on prend
-		// score avant atq
+		// pour la cellule avec laquelle on attaque
+		// score avant attaque
 		double nb_voisins_ennemies = 0;
 		double nb_des_voisins = 0;
 		for (unsigned int i = 0; i < cellule.nbNeighbors; i++) {
@@ -144,8 +151,8 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices);
-		// score apr�s atq
+		double score_avant = (nb_des_voisins / nb_voisins_ennemies) - (cellule.infos.nbDices); // varie entre -7 et 6
+		// score après attaque
 		nb_voisins_ennemies = 0;
 		nb_des_voisins = 0;
 		for (unsigned int i = 0; i < cellule.nbNeighbors; i++) {
@@ -154,17 +161,20 @@ double atqCalculScore(int id, SCell& cellule, SCell& ennemie, bool reussir) {
 				nb_des_voisins += cellule.neighbors[i]->infos.nbDices;
 			}
 		}
-		double score_apres = 1;
+		double score_apres = 1; // après avoir attaqué il nous reste forcément 1 dès sur la cellule
 		if (nb_voisins_ennemies != 0) {
-			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1;
+			score_apres = (nb_des_voisins / nb_voisins_ennemies) - 1; // varie entre 0 et 7
 		}
-		// score total
-		score += (score_apres - score_avant);
+		// score total de l'attaque 
+		score += (score_apres - score_avant); // varie entre -6 et 14
 
 		return score;
 	}
 }
 
+// fonction qui retourne un nombre qui nous servira de probabilité (bien que ce ne soit pas la vraie probabilité) 
+// de réussite d'une attaque en fonction du nombre de dés 
+// de la cellule avec laquelle on attaque, et le nombre de dès de la cellule qu'on attaque. 
 double proba(unsigned int nbDes, unsigned int nbDesVoisin) {
-	return (nbDes - nbDesVoisin + 1) / nbDes;
+	return (nbDes - nbDesVoisin + 1) / nbDes; // varie entre 0.25 et 1
 }
