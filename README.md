@@ -73,6 +73,6 @@ Ainsi, notre fonction  PlayTurn() va calculer pour chaque attaque possible (càd
 
 Le projet est la concaténation de deux projets. Durant le projet, lorsqu’on a finit de programmer le générateur de map aléatoire, on pouvait considérer le jeu qu’on codait comme un assemblage de bloc. Cela met en évidence que ce projet pouvait commencer de différentes façons et se réaliser selon différentes apprôches. 
 
-Il était donc important de réfléchir à la manière dont on allait résoudre le problème plutôt qu’à la manière de le coder. Les cours de théorie des graphes et d’algorithmie en S6 ont été très important pour résoudre les problèmes qu’on a eut à résoudre. Néanmoins, avec bon esprit d’équipe et une participation de tous les membres, on a réussit à mener à bien un projet qui nous a sembler pas si facile de prime abord.
+Il était donc important de réfléchir à la manière dont on allait résoudre le problème plutôt qu’à la manière de le coder. Les cours de théorie des graphes et d’algorithmie en S6 ont été très important pour résoudre les problèmes qu’on a eut à résoudre. Néanmoins, avec bon esprit d’équipe et une participation de tous les membres, on a réussit à mener à bien un projet qui nous a semblé pas si facile de prime abord.
 
 Une connaissance avancée du C++ a été très important ainsi qu’une bonne capacité à résoudre des bugs. Le résultat à la fin est un jeu, avec un générateur de map aléatoire et une stratégie.  
